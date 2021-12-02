@@ -10,7 +10,7 @@ tensorReg2D(y, X, W = NULL, n_R, family, opt = 1, max_ite = 100, tol = 10^(-7))
 \arguments{
 \item{y}{A numerical vector. Dependent variable.}
 
-\item{X}{A numerical 3-D arrary. Independent variable(3-D tensor).}
+\item{X}{A numerical 3-D array Independent variable(3-D tensor).}
 
 \item{W}{A numerical matrix. Independent variable.}
 
@@ -93,8 +93,8 @@ To be more specific, it provides statistical inference for input variables.
 Moreover, the function isn't restricted to second-order tensor input \kbd{X};
 it could combine with other meaningful numerical variables \kbd{W}.
 
-Since \kbd{tensorReg2D} is based on  \strong{Alternating Least Square
-Algorithm}, we need to predefine following arguments to meet favorable
+Since \kbd{tensorReg2D} is based on \strong{Alternating Least Square
+Algorithm}, we need to pre-define following arguments to meet favorable
 optimization result.
 
 \kbd{n_R}: In the case of regression with the order 2, P-by-G-by-n tensor, we
@@ -102,8 +102,8 @@ can break a unknown parameter matrix \strong{B}(P-by-G) into multiplication
 of two matrix \strong{B_1}(P-by-R) and \strong{t(B_2)} (R-by-G), which means
 that we can estimate the original matrix \strong{B} by iteratively updating
 \strong{B_1} and \strong{B_2}. In this scenario, \kbd{n_R} equals to the rank
-of these two appoximate matrix \strong{B_1} and \strong{B_2}. Conceivably,
-\kbd{1 <= n_R <= min(P,G)}, and by properly preappointing \kbd{n_R}, we can
+of these two approximate matrix \strong{B_1} and \strong{B_2}. Conceivably,
+\kbd{1 <= n_R <= min(P,G)}, and by properly pre-appointing \kbd{n_R}, we can
 estimate a unknown parameter matrix. By default, \kbd{n_R = 1}.
 
 \kbd{opt}: In optimization algorithm, we have to determine stopping
@@ -127,7 +127,7 @@ variable is non-negative integer.
 \kbd{max_ite}: In optimization algorithm, we have to beforehand determine maximum iteration beforehand.
 By default, \kbd{max_ite = 100}.
 
-\kbd{tol}: In optimization algorithm, we have to beforehand determine maximum toleracne to cooperate with
+\kbd{tol}: In optimization algorithm, we have to beforehand determine maximum tolerance to cooperate with
 stopping criterion(\kbd{opt}).
 }
 \examples{
@@ -180,8 +180,14 @@ head(predict(result_P, DATA_P$X))
 
 }
 \references{
-Mengyun Wu, Jian Huang, and Shuangge Ma (2017). Identifying gene-gene
-  interactions using penalized tensor regression.
+Wu, M., Huang, J., and Ma, S. (2018). Identifying gene‐gene interactions
+using penalized tensor regression. Statistics in medicine, 37(4), 598-610.
+
+Sheng-Mao Chang, Meng Yang, Wenbin Lu, Yu-Jyun Huang, Yueyang Huang, Hung Hung,
+Jeffrey C Miecznikowski, Tzu-Pin Lu, Jung-Ying Tzeng,
+Gene-set integrative analysis of multi-omics data using tensor-based association test,
+Bioinformatics, 2021;, btab125,
+(\href{https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/btab125/6154849}{Link}))
 }
 \author{
 Sheng-Mao Chang \email{smchang@mail.ncku.edu.tw}
