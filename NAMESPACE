@@ -3,6 +3,7 @@
 S3method(plot,tsglm)
 S3method(predict,tsglm)
 S3method(summary,tsglm)
+export("%hp%")
 export(draw.coef)
 export(tensorReg2D)
 import(graphics)

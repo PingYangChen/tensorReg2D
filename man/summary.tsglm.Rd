@@ -38,9 +38,6 @@ test statistics, and p-value of parameters and significance stars.
 formatting the coefficients, standard errors, etc. and additionally gives 'significance stars'
 }
 \examples{
-# Predefined function: sum of hadamard product in each array
-`\%i\%` <- function(X, B) sapply(1:dim(X)[3], function(i) sum(X[,,i]*B))
-
 # Simulation data
 n <- 500 # number of observations
 n_P <- 3; n_G <- 64 # dimension of 3-D tensor variables.
@@ -49,22 +46,22 @@ beta_True <- rep(1, n_d)
 B_True <- c(1,1,1)\%*\%t(rnorm(n_G)) + c(0, .5, .5)\%*\%t(rnorm(n_G))
 B_True <- B_True / 10
 W <- matrix(rnorm(n*n_d), n, n_d); W[,1] <- 1
-W_named <- W 
+W_named <- W
 colnames(W_named) <- paste0("w", 1:ncol(W_named))
 X <- array(rnorm(n*n_P*n_G), dim=c(n_P, n_G, n))
 X_named <- X
 dimnames(X_named) <- list(paste0("R", 1:nrow(X_named)),paste0("C", 1:ncol(X_named)))
 ## Regression
-y_R <- as.vector(W\%*\%beta_True + X\%i\%B_True + rnorm(n))
+y_R <- as.vector(W\%*\%beta_True + X\%hp\%B_True + rnorm(n))
 DATA_R <- list(y = y_R, X = X, W = W)
-y_R_named <- as.vector(W_named\%*\%beta_True + X_named\%i\%B_True + rnorm(n))
+y_R_named <- as.vector(W_named\%*\%beta_True + X_named\%hp\%B_True + rnorm(n))
 DATA_R_named <- list(y = y_R_named, X = X_named, W = W_named)
 ## Binomial
-p_B <- exp(W\%*\%beta_True + X\%i\%B_True); p_B <- p_B/(1+p_B)
+p_B <- exp(W\%*\%beta_True + X\%hp\%B_True); p_B <- p_B/(1+p_B)
 y_B <- rbinom(n, 1, p_B)
 DATA_B <- list(y = y_B, W = W, X = X)
 ## Poisson
-p_P <- exp(W\%*\%beta_True + X\%i\%B_True)
+p_P <- exp(W\%*\%beta_True + X\%hp\%B_True)
 y_P <- rpois(n, p_P)
 y_P[which(y_P > 170)] <- 170 # If y_P > 170, factorial(y_P) == inf.
 DATA_P <- list(y = y_P, W = W, X = X)

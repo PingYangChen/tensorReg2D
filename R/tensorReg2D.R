@@ -104,9 +104,6 @@
 #'   \kbd{family}: The family for model.
 #'
 #' @examples
-#' # Predefined function: sum of hadamard product in each array
-#' `%i%` <- function(X, B) sapply(1:dim(X)[3], function(i) sum(X[,,i]*B))
-#'
 #' # Simulation data
 #' n <- 500 # number of observations
 #' n_P <- 3; n_G <- 64 # dimension of 3-D tensor variables.
@@ -117,14 +114,14 @@
 #' W <- matrix(rnorm(n*n_d), n, n_d); W[,1] <- 1
 #' X <- array(rnorm(n*n_P*n_G), dim=c(n_P, n_G, n))
 #' ## Regression
-#' y_R<- as.vector(W%*%beta_True + X%i%B_True + rnorm(n))
+#' y_R<- as.vector(W%*%beta_True + X%hp%B_True + rnorm(n))
 #' DATA_R <- list(y = y_R, X = X, W = W)
 #' ## Binomial
-#' p_B <- exp(W%*%beta_True + X%i%B_True); p_B <- p_B/(1+p_B)
+#' p_B <- exp(W%*%beta_True + X%hp%B_True); p_B <- p_B/(1+p_B)
 #' y_B <- rbinom(n, 1, p_B)
 #' DATA_B <- list(y = y_B, W = W, X = X)
 #' ## Poisson
-#' p_P <- exp(W%*%beta_True + X%i%B_True)
+#' p_P <- exp(W%*%beta_True + X%hp%B_True)
 #' y_P <- rpois(n, p_P)
 #' y_P[which(y_P > 170)] <- 170 # If y_P > 170, factorial(y_P) == inf.
 #' DATA_P <- list(y = y_P, W = W, X = X)
@@ -174,6 +171,23 @@ tensorReg2D <- function (y, X, W = NULL, n_R, family, opt = 1, max_ite = 100,
   return(result)
 }
 
+#' Computation of the vector of Hadamard product values of the matrices
+#' \code{X[,,i]} and \code{B}.
+#'
+#' @param X A numerical 3D array. Each slice is a matrix of size the same as \code{B}.
+#' @param B A numerical matrix.
+#'
+#' @return numerical vector.
+#'
+#' @author Sheng-Mao Chang
+#'
+#' @export
+`%hp%` <- function(X, B) {
+  return(
+    sapply(1:dim(X)[3], function(i) sum(X[,,i] * B))
+  )
+}
+
 #' Computation of two matrices: the column of the output matrix is the
 #' Kronecker product of two columns of each input matrix.
 #'
@@ -192,19 +206,6 @@ tensorReg2D <- function (y, X, W = NULL, n_R, family, opt = 1, max_ite = 100,
     }
   }
   return(O)
-}
-
-#' Computation of the vector of inner product values of the matrices
-#' \code{X[,,i]} and \code{B}.
-#'
-#' @param X A numerical 3D array. Each slice is a matrix of size the same as \code{B}.
-#' @param B A numerical matrix.
-#'
-#' @return numerical vector.
-`%i%` <- function(X, B) {
-  return(
-    sapply(1:dim(X)[3], function(i) sum(X[,,i] * B))
-  )
 }
 
 #' Computation of the matrix with rows being the linearized matrix products of
@@ -366,7 +367,7 @@ VAR_ALS <- function(DATA, n_R, B1, B2, beta, family) {
   C <- matrix(B1[-(1:n_R), ], n_P - n_R, n_R)
   H <- matrix(B1[1:n_R, 1:n_R], n_R, n_R)
   df <- (n_P - n_R + n_G) * n_R + n_d
-  w_seq <- X %i% B + W %*% beta
+  w_seq <- X %hp% B + W %*% beta
   res <- y - w_seq
   if (family == "gaussian")
     var_vec <- rep((n - df)/sum(res^2), n)
@@ -535,7 +536,7 @@ ALS <- function(DATA, n_R, family, opt = opt, max_ite = max_ite,
     beta <- as.matrix(temp[1:n_d, 1])
     rownames(beta) <- NULL
     B <- matrix(temp[-c(1:n_d), 1], n_P, n_G)
-    w_seq <- X %i% B + W %*% beta
+    w_seq <- X %hp% B + W %*% beta
     res <- y - w_seq
     IC_Dev <- Calculate_IC_Dev(y, w_seq, n_P * n_G + n_d,
                                family)
@@ -559,7 +560,7 @@ ALS <- function(DATA, n_R, family, opt = opt, max_ite = max_ite,
                         n_P, n_R)
       G <- matrix(B_1_new[n_R, n_R], n_R, n_R)
       B_new <- B_1_new %*% t(B_2_new)
-      offset_vec <- X %i% B_new
+      offset_vec <- X %hp% B_new
       beta_new <- getGLMCoef(W, y, family, offset_vec)
       if (opt == 1)
         test <- max(max(abs(B_new - B)), max(abs(beta_new - beta)))
@@ -573,7 +574,7 @@ ALS <- function(DATA, n_R, family, opt = opt, max_ite = max_ite,
         break
     }
     beta <- as.matrix(beta)
-    w_seq <- X %i% B + W %*% beta
+    w_seq <- X %hp% B + W %*% beta
     df <- n_d + (n_G + n_P - n_R) * n_R
     V <- VAR_ALS(DATA, n_R, B_1, B_2, beta, family)
     if (is.na(V$V_B[1, 1])) {
