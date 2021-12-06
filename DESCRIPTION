@@ -35,6 +35,8 @@ Author: Mark Chen [aut, cre],
   Wenbin Lu [aut],
   Jung-Ying Tzeng [aut],
   Ping-Yang Chen [aut]
+URL: https://github.com/PingYangChen/tensorReg2D
+BugReports: https://github.com/PingYangChen/tensorReg2D/issues
 Maintainer: Mark Chen <l501l501l@gmail.com>
 Repository: CRAN
 Packaged: 2021-07-08 16:22:21 UTC; l501l
