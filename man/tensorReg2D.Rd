@@ -177,9 +177,6 @@ head(predict(result_P, DATA_P$X))
 
 }
 \references{
-Wu, M., Huang, J., and Ma, S. (2018). Identifying gene‐gene interactions
-using penalized tensor regression. Statistics in medicine, 37(4), 598-610.
-
 Sheng-Mao Chang, Meng Yang, Wenbin Lu, Yu-Jyun Huang, Yueyang Huang, Hung Hung,
 Jeffrey C Miecznikowski, Tzu-Pin Lu, Jung-Ying Tzeng,
 Gene-set integrative analysis of multi-omics data using tensor-based association test,
