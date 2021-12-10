@@ -175,8 +175,8 @@ summary.tsglm <- function(object, ...){
     sign <- symnum(pval, corr = FALSE, na = FALSE,
                    cutpoints = c(0, 0.01, 0.05, 0.1, 1),
                    symbols = c("***", "**", "*", " "))
-    coef_matrix <- round(cbind(Estimate = est, `Std. Error` = se, `t value` = t_value), 5)
-    coef_df <- as.data.frame(cbind(coef_matrix, `Pr(>|t|)` = format.pval(pval), ` ` = sign))
+    coef_matrix <- round(cbind(Estimate = est, `Std. Error` = se, `z value` = t_value), 5)
+    coef_df <- as.data.frame(cbind(coef_matrix, `Pr(>|z|)` = format.pval(pval), ` ` = sign))
     rownames(coef_df) <- names
     cat("Coefficients:","\n")
     print(format(coef_df, trim = T))

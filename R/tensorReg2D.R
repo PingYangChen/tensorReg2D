@@ -148,6 +148,9 @@
 #' image(B_True);image(result_P$B_EST)
 #' head(predict(result_P, DATA_P$X))
 #'
+#' @references
+#'   Mengyun Wu, Jian Huang, and Shuangge Ma (2017). Identifying gene-gene
+#'   interactions using penalized tensor regression.
 #' @references Sheng-Mao Chang, Meng Yang, Wenbin Lu, Yu-Jyun Huang, Yueyang Huang, Hung Hung,
 #' Jeffrey C Miecznikowski, Tzu-Pin Lu, Jung-Ying Tzeng,
 #' Gene-set integrative analysis of multi-omics data using tensor-based association test,
